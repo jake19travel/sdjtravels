@@ -22,7 +22,7 @@ export const Route = createFileRoute("/visa-checker")({
 });
 
 function VisaChecker() {
-  const [slug, setSlug] = useState(VISA_DATA[0].slug);
+  const [slug, setSlug] = useState(VISA_DATA[0]?.slug ?? "");
   const [days, setDays] = useState(7);
   const [shown, setShown] = useState<{ slug: string; days: number } | null>(null);
   const entry = shown && VISA_DATA.find((v) => v.slug === shown.slug);
