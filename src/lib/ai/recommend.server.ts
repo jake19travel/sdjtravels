@@ -28,7 +28,7 @@ Recommend exactly 3 destinations that match the traveller's request. For each gi
 Respect budget and dates. Be honest when something is a stretch. summary: one sentence.`;
 
 export async function recommendDestinations(request: Request, prompt: string): Promise<Recommendations> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("AI is not configured.");
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
   const provider = createOpenAI({
