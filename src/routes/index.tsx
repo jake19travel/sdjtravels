@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState, type FormEvent } from "react";
-import { Sparkles, Wallet, ShieldCheck, ArrowRight, Check, Users, HeartPulse, Landmark, Plane } from "lucide-react";
+import { Sparkles, Wallet, ShieldCheck, ArrowRight, Check, Users, HeartPulse, Landmark, Plane, Loader2 } from "lucide-react";
+import { getRecommendations, type RecommendResult } from "@/lib/ai/recommend.functions";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/hero.jpg";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -26,8 +28,53 @@ export const Route = createFileRoute("/")({
 const PLACEHOLDER =
   "Five days in November, under ₹80,000, warm weather, good food, safe for a solo woman, no visa hassle";
 
+function Results({ rec }: { rec: RecommendResult }) {
+  return (
+    <section id="results" className="mx-auto max-w-5xl scroll-mt-4 px-5 pb-14">
+      {!rec.ok ? (
+        <p className="rounded-3xl border bg-card p-5 text-sm font-medium text-destructive shadow-soft">{rec.error}</p>
+      ) : (
+        <>
+          <h2 className="text-2xl font-bold text-teal">Your matches</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{rec.data.summary}</p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {rec.data.destinations.map((d) => (
+              <article key={d.name} className="rounded-3xl border bg-card p-5 shadow-soft">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-teal">{d.name}</h3>
+                    <p className="text-xs text-muted-foreground">{d.country}</p>
+                  </div>
+                  <div className="rounded-2xl bg-sunset px-3 py-1.5 text-center text-primary-foreground">
+                    <p className="font-display text-xl font-bold leading-none">{Math.round(d.tripScore)}</p>
+                    <p className="text-[9px] font-semibold uppercase">Score</p>
+                  </div>
+                </div>
+                <ul className="mt-4 space-y-1.5 text-sm">
+                  {d.reasons.map((r) => (
+                    <li key={r} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-success" />{r}</li>
+                  ))}
+                </ul>
+                <div className="mt-4 flex items-center justify-between rounded-2xl bg-sand p-3 text-sm">
+                  <span className="text-muted-foreground">Est. all-in</span>
+                  <span className="font-display text-lg font-bold text-teal">₹{Math.round(d.estimatedAllInInr).toLocaleString("en-IN")}</span>
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground">{d.visaNote}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">AI-powered suggestions. Prices are rough estimates — always check visa rules on official sources.</p>
+        </>
+      )}
+    </section>
+  );
+}
+
 function Index() {
   const [trip, setTrip] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [rec, setRec] = useState<RecommendResult | null>(null);
+  const recommend = useServerFn(getRecommendations);
 
   return (
     <main className="min-h-screen overflow-x-hidden">
@@ -44,9 +91,19 @@ function Index() {
             <span className="text-primary">We find where to go,</span> show you the real price, and make sure you can actually get there.
           </h1>
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+              setLoading(true);
+              setRec(null);
+              try {
+                const res = await recommend({ data: { prompt: trip.trim() || PLACEHOLDER } });
+                setRec(res);
+              } catch (err) {
+                setRec({ ok: false, error: err instanceof Error ? err.message : "Something went wrong." });
+              } finally {
+                setLoading(false);
+                setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth" }), 50);
+              }
             }}
             className="mt-6 rounded-3xl border bg-card p-3 shadow-soft"
           >
@@ -60,8 +117,8 @@ function Index() {
               placeholder={PLACEHOLDER}
               className="w-full resize-none rounded-2xl bg-sand p-4 text-base leading-relaxed outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-ring"
             />
-            <button className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-sunset px-5 py-3.5 font-semibold text-primary-foreground shadow-glow transition hover:brightness-105">
-              Find my trip <ArrowRight className="h-4 w-4" />
+            <button disabled={loading} className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-sunset px-5 py-3.5 font-semibold text-primary-foreground shadow-glow transition hover:brightness-105 disabled:opacity-80">
+              {loading ? (<><Loader2 className="h-4 w-4 animate-spin" /> Finding your matches…</>) : (<>Find my trip <ArrowRight className="h-4 w-4" /></>)}
             </button>
           </form>
         </div>
@@ -69,6 +126,8 @@ function Index() {
           <img src={hero} alt="A solo traveller watching the sunset over a coastal town" width={1024} height={1280} className="h-full w-full object-cover" />
         </div>
       </section>
+
+      {rec && <Results rec={rec} />}
 
       {/* Features */}
       <section className="mx-auto max-w-5xl px-5 pb-14">
