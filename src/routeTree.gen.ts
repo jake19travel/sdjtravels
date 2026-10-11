@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VisaCheckerRouteImport } from './routes/visa-checker'
+import { Route as TripScoreIndexRouteImport } from './routes/trip-score.index'
+import { Route as TripScoreSlugRouteImport } from './routes/trip-score.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VisaCheckerRoute = VisaCheckerRouteImport.update({
+  id: '/visa-checker',
+  path: '/visa-checker',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TripScoreIndexRoute = TripScoreIndexRouteImport.update({
+  id: '/trip-score/',
+  path: '/trip-score/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TripScoreSlugRoute = TripScoreSlugRouteImport.update({
+  id: '/trip-score/$slug',
+  path: '/trip-score/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/visa-checker': typeof VisaCheckerRoute
+  '/trip-score/$slug': typeof TripScoreSlugRoute
+  '/trip-score/': typeof TripScoreIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/visa-checker': typeof VisaCheckerRoute
+  '/trip-score/$slug': typeof TripScoreSlugRoute
+  '/trip-score': typeof TripScoreIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/visa-checker': typeof VisaCheckerRoute
+  '/trip-score/$slug': typeof TripScoreSlugRoute
+  '/trip-score/': typeof TripScoreIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/visa-checker' | '/trip-score/$slug' | '/trip-score/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/visa-checker' | '/trip-score/$slug' | '/trip-score'
+  id: '__root__' | '/' | '/visa-checker' | '/trip-score/$slug' | '/trip-score/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  VisaCheckerRoute: typeof VisaCheckerRoute
+  TripScoreSlugRoute: typeof TripScoreSlugRoute
+  TripScoreIndexRoute: typeof TripScoreIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +78,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/visa-checker': {
+      id: '/visa-checker'
+      path: '/visa-checker'
+      fullPath: '/visa-checker'
+      preLoaderRoute: typeof VisaCheckerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trip-score/': {
+      id: '/trip-score/'
+      path: '/trip-score'
+      fullPath: '/trip-score/'
+      preLoaderRoute: typeof TripScoreIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trip-score/$slug': {
+      id: '/trip-score/$slug'
+      path: '/trip-score/$slug'
+      fullPath: '/trip-score/$slug'
+      preLoaderRoute: typeof TripScoreSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  VisaCheckerRoute: VisaCheckerRoute,
+  TripScoreSlugRoute: TripScoreSlugRoute,
+  TripScoreIndexRoute: TripScoreIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
