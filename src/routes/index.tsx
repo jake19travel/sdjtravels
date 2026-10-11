@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { Sparkles, Wallet, ShieldCheck, ArrowRight, Check, Users, HeartPulse, Landmark, Plane } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import hero from "@/assets/hero.jpg";
+import { SiteHeader } from "@/components/SiteHeader";
 
 const TITLE = "Wayfind — Trips planned around what you actually want";
 const DESC =
@@ -30,14 +31,7 @@ function Index() {
 
   return (
     <main className="min-h-screen overflow-x-hidden">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-        <span className="font-display text-2xl font-bold text-teal">
-          Way<span className="text-primary">find</span>
-        </span>
-        <a href="#waitlist" className="rounded-full bg-teal px-4 py-2 text-sm font-semibold text-teal-foreground">
-          Join waitlist
-        </a>
-      </header>
+      <SiteHeader />
 
       {/* Hero */}
       <section className="mx-auto max-w-5xl px-5 pb-12 pt-4 md:grid md:grid-cols-[1.2fr_1fr] md:items-center md:gap-10">
@@ -193,7 +187,7 @@ function SampleScore() {
 
 function Waitlist({ trip }: { trip: string }) {
   const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "done" | "error" | "duplicate">("idle");
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -206,7 +200,7 @@ function Waitlist({ trip }: { trip: string }) {
     const { error } = await supabase
       .from("waitlist_signups")
       .insert({ email: clean, trip_description: trip.trim().slice(0, 1000) || null });
-    setState(error && error.code !== "23505" ? "error" : "done");
+    setState(!error ? "done" : error.code === "23505" ? "duplicate" : "error");
   }
 
   return (
@@ -238,6 +232,7 @@ function Waitlist({ trip }: { trip: string }) {
           </form>
         )}
         {state === "error" && <p className="mt-3 text-sm font-medium">Please check your email and try again.</p>}
+        {state === "duplicate" && <p className="mt-3 text-sm font-medium">This email is already on the waiting list.</p>}
       </div>
     </section>
   );
