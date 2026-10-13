@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SDJ Travels: tell us how you want to feel, we'll find the trip</title>
+<meta name="description" content="Describe the trip you want. We pick the destination, show the real price, and check your visa before you pay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1D4ED8;--ink:#0B0F1A;--soft:rgba(11,15,26,.62);--line:rgba(11,15,26,.15);--tint:rgba(29,78,216,.08)}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.55 "Plus Jakarta Sans",system-ui,sans-serif;color:var(--ink);background:#fff}
+a{color:inherit}h2{font-size:1.6rem;letter-spacing:-.02em;margin:28px 0 12px}h3{margin-bottom:8px}
+.wrap{max-width:1080px;margin:auto;padding:0 20px}.narrow{max-width:660px}.soft{color:var(--soft);font-size:.92rem}
+header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:5}
+header .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
+.logo{font-weight:800;text-decoration:none;font-size:1.15rem}
+nav{display:flex;gap:18px}nav a{text-decoration:none;font-weight:600;font-size:.95rem}nav a.on{color:var(--blue)}
+[data-v]{display:none}[data-v].on{display:block}
+.hero{background:var(--ink);color:#fff;padding:56px 0 48px}
+h1{font-size:clamp(2.1rem,6.5vw,3.8rem);line-height:1.04;letter-spacing:-.035em;font-weight:800;max-width:15ch}
+.hero form{display:grid;grid-template-columns:1fr 170px auto;gap:10px;margin-top:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips button{font:inherit;font-size:.88rem;background:none;color:inherit;border:1px solid rgba(255,255,255,.4);border-radius:99px;padding:6px 14px;cursor:pointer}
+input,select{font:inherit;padding:13px 14px;border:1px solid var(--line);border-radius:12px;width:100%;background:#fff;color:var(--ink)}
+label{display:block;font-weight:600;font-size:.92rem;margin-bottom:14px}label input,label select{margin-top:6px;font-weight:400}
+.btn{font:inherit;font-weight:700;background:var(--blue);color:#fff;border:0;border-radius:12px;padding:13px 20px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.btn:disabled{opacity:.4;cursor:not-allowed}.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.big{width:100%;padding:16px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}.hero :focus-visible,footer :focus-visible{outline-color:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.sw{display:flex;align-items:center;gap:10px;margin:0;cursor:pointer}.sw input{width:20px;height:20px;margin:0;accent-color:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}.grid .card{margin:0;display:flex;flex-direction:column;gap:6px}
+.card h3 span{font-weight:400;color:var(--soft)}.price{font-size:1.7rem;font-weight:800;letter-spacing:-.02em}
+.grid .btn{margin-top:auto}
+.badge{display:inline-block;background:var(--blue);color:#fff;font-size:.72rem;font-weight:700;border-radius:99px;padding:3px 10px;margin-left:10px;vertical-align:middle;letter-spacing:0}
+.bar{height:8px;background:var(--tint);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);transition:width .4s}
+.steps{display:flex;justify-content:space-between;list-style:none;padding:8px 0 20px;font-size:.82rem;color:var(--soft)}.steps .on{color:var(--ink);font-weight:700}
+table{width:100%;border-collapse:collapse;margin-top:10px}td{padding:6px 0;border-bottom:1px solid var(--line)}td:last-child{text-align:right}tr:last-child td{font-weight:800;border:0}
+.ck{list-style:none;padding:0}.ck li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.ck li:last-child{border:0}
+.ck b{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.9rem;border:2px solid var(--blue);color:var(--blue)}
+.ck .ok b{background:var(--blue);color:#fff}.ck .warn b{border-color:var(--ink);color:var(--ink)}.ck .fail b{background:var(--ink);border-color:var(--ink);color:#fff}
+.ck span{display:block;color:var(--soft);font-size:.92rem}
+.tl{list-style:none;padding:0}.tl li{display:flex;gap:14px;padding:8px 0}.tl b{min-width:56px}
+.stage{display:flex;gap:6px;margin:12px 0}.stage span{flex:1;font-size:.78rem;text-align:center;padding-top:8px;border-top:4px solid var(--line);color:var(--soft)}.stage .on{border-color:var(--blue);color:var(--ink);font-weight:700}
+.status{background:var(--tint);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-weight:600}
+.sos{background:var(--ink)}.inline{display:flex;gap:8px;margin:12px 0}.inline .btn{flex:none}
+.pill{display:inline-block;background:var(--tint);border-radius:99px;padding:4px 14px;margin:0 6px 6px 0;font-weight:600}
+.vote{display:flex;justify-content:space-between;width:100%;font:inherit;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer}.vote.on{border:2px solid var(--blue);background:var(--tint)}
+dialog{border:0;border-radius:18px;padding:24px;max-width:440px;width:calc(100% - 32px)}dialog::backdrop{background:rgba(11,15,26,.6)}dialog .btn{display:block;width:100%;margin-top:8px}
+#fab{position:fixed;right:16px;bottom:16px;z-index:9;box-shadow:0 6px 20px rgba(11,15,26,.3)}
+#chat{position:fixed;right:12px;bottom:12px;z-index:10;width:min(380px,calc(100vw - 24px));height:min(500px,80vh);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 40px rgba(11,15,26,.3);display:flex;flex-direction:column;overflow:hidden}
+#chat[hidden]{display:none}#chat header{position:static;background:var(--ink);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;font-weight:700;height:auto}
+#chat header button{background:none;border:0;color:#fff;font:inherit;cursor:pointer}
+#msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:8px}.m{background:var(--tint);padding:9px 13px;border-radius:14px;max-width:85%}.m.me{background:var(--blue);color:#fff;align-self:flex-end}
+#sug{padding:0 14px 8px}#sug button{border-color:var(--line);color:var(--ink)}#cf{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+footer{background:var(--ink);color:#fff;padding:44px 0 28px;margin-top:64px}footer .foot{display:flex;flex-wrap:wrap;gap:32px;justify-content:space-between}
+footer p{opacity:.75;max-width:30ch;margin:6px 0 12px}footer .links{display:flex;flex-direction:column;gap:8px}footer small{display:block;margin-top:32px;opacity:.55}
+@media(max-width:640px){.hero form{grid-template-columns:1fr}nav{gap:12px}.steps{font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="#home">SDJ Travels</a><nav><a href="#home">Explore</a><a href="#trip">My trip</a><a href="#group">Group trips</a></nav></div></header>
+
+<section data-v="home">
+ <div class="hero"><div class="wrap">
+  <h1>Tell us how you want to feel. We'll find the trip.</h1>
+  <form id="find">
+   <input id="q" aria-label="What kind of trip do you want?" placeholder="Somewhere warm for a week in March, under ₹40,000">
+   <input id="dep" type="date" aria-label="When do you want to leave?">
+   <button class="btn">Show me</button>
+  </form>
+  <div class="chips"><button type="button">Beach and calm</button><button type="button">City food and culture</button><button type="button">Cheap and sunny in March</button></div>
+ </div></div>
+ <div class="wrap" id="results"></div>
+</section>
+
+<section data-v="book"><div class="wrap narrow" id="bookbox"></div></section>
+<section data-v="trip"><div class="wrap narrow" id="tripbox"></div></section>
+<section data-v="group"><div class="wrap narrow" id="groupbox"></div></section>
+
+<footer><div class="wrap foot">
+ <div><strong>SDJ Travels</strong><p>Trips that make sense, from the first search to the flight home.</p></div>
+ <div class="links"><a href="#trip">Refunds</a><a href="#group">Group trips</a><a href="#home">Explore trips</a></div>
+ <div><p>Ready when you are.</p><a class="btn" href="#home" id="cta">Plan my trip</a></div>
+</div><div class="wrap"><small>© 2026 SDJ Travels. Demo data only.</small></div></footer>
+
+<dialog id="help"><h3>What's going on?</h3><div id="hopts"></div><p id="hans" class="status" hidden></p><button class="btn" id="hchat" hidden>Ask the trip assistant</button><button class="btn ghost" id="hx">Close</button></dialog>
+
+<button class="btn" id="fab">Ask us anything</button>
+<aside id="chat" hidden aria-label="Trip assistant"><header>Trip assistant<button id="cx" aria-label="Close chat">Close</button></header>
+ <div id="msgs" aria-live="polite"></div>
+ <div class="chips" id="sug"><button data-q="Do I need a visa?">Do I need a visa?</button><button data-q="Is it safe to travel here alone in March?">Safe to go alone in March?</button></div>
+ <form id="cf"><input id="ci" aria-label="Your question" placeholder="Ask about visas, weather, safety…" autocomplete="off"><button class="btn">Send</button></form>
+</aside>
+
+<script>
+/* ---------- Mock data. Swap each API.* function for a live call later. ---------- */
+const ORIGIN='Bengaluru',DAYS=6;
+const DESTS=[
+{id:'goa',name:'Goa',country:'India',tags:['beach','relax','cheap'],price:6200,was:6900,extras:{bags:0,visa:0,taxes:900},layover:0,validity:0,
+ temp:[31,32,33,34,33,30,29,29,30,32,32,31],rain:[0,0,5,20,100,550,850,600,300,120,30,5],
+ safe:`Very safe for solo travellers. Stick to busy beaches after dark.`,visa:{IN:{need:false,text:`No visa needed. It's a domestic trip.`}},spots:['Palolem beach morning','Old Goa churches and cafés','Sunset at Chapora Fort']},
+{id:'bali',name:'Bali',country:'Indonesia',tags:['beach','relax','culture'],price:21500,was:21500,extras:{bags:1800,visa:3000,taxes:2400},layover:130,validity:6,
+ temp:[30,30,31,31,31,30,29,30,30,31,31,30],rain:[350,300,250,120,90,60,50,40,50,90,180,300],
+ safe:`Generally safe for solo travellers. Use licensed taxis at night.`,visa:{IN:{need:true,text:`Visa on arrival needed, about ₹3,000. It's in your all-in price.`}},spots:['Ubud rice terraces','Uluwatu temple at sunset','Nusa Penida day trip']},
+{id:'lisbon',name:'Lisbon',country:'Portugal',tags:['city','culture','food'],price:51000,was:58000,extras:{bags:3500,visa:7000,taxes:6200},layover:55,validity:6,
+ temp:[15,16,19,21,23,27,29,29,27,23,18,16],rain:[90,80,55,60,35,12,3,5,30,80,100,110],
+ safe:`Very safe for solo travellers. Watch for pickpockets on trams.`,visa:{IN:{need:true,text:`Schengen visa needed. Apply at least 15 days before you fly.`}},spots:['Alfama walking tour','Belém pastries and tower','Day trip to Sintra']},
+{id:'tokyo',name:'Tokyo',country:'Japan',tags:['city','culture','food'],price:46000,was:46000,extras:{bags:3800,visa:1500,taxes:5200},layover:95,validity:6,
+ temp:[10,11,14,19,24,26,30,32,28,22,17,12],rain:[50,60,115,125,140,165,155,170,210,100,95,40],
+ safe:`One of the safest cities for solo travellers, day or night.`,visa:{IN:{need:true,text:`e-Visa needed. It usually takes about 5 days.`}},spots:['Asakusa and Senso-ji','Shibuya food crawl','Day trip to Kamakura']}];
+const total=d=>d.price+d.extras.bags+d.extras.visa+d.extras.taxes,dropped=d=>d.was>d.price*1.05;
+const API={
+ async weather(d,date){const m=date.getMonth(),t=d.temp[m],r=d.rain[m];return{temp:t,rain:r,label:r>250?'Rainy season':t>=33?'Hot and dry':t<14?'Cold':r<60&&t>=18?'Dry and pleasant':'Mild with some showers'}},
+ async preflight(d,t,dep){
+  const v=d.visa[t.nat]||(d.validity?null:d.visa.IN),need=addDays(dep,DAYS);need.setMonth(need.getMonth()+d.validity);const e=new Date(t.exp),l=d.layover;
+  return[
+   !v?{s:'warn',t:'Visa',m:`Check the rules for your passport before you pay.`}:{s:v.need?'warn':'ok',t:'Visa',m:v.text},
+   !d.validity?{s:'ok',t:'Passport',m:`You don't need one for this trip.`}:e>=need?{s:'ok',t:'Passport',m:`Valid until ${fmt(e)} ${e.getFullYear()}. You're covered.`}:{s:'fail',t:'Passport',m:`It expires too soon. Most countries want 6 months left after you return.`},
+   !l?{s:'ok',t:'Connection',m:`Direct flight. Nothing to catch.`}:l<60?{s:'warn',t:'Connection',m:`Only ${l} minutes to change planes. That's tight.`}:l>600?{s:'warn',t:'Connection',m:`A very long wait between flights.`}:{s:'ok',t:'Connection',m:`${l} minutes to change planes. Plenty of time.`}]},
+ async travellers(d){return[{n:'Meera, 27',note:`Flying the same week, travelling solo`},{n:'Dev, 31',note:`Lands a day earlier, staying in a hostel`}]},
+ async assistant(q,{dest:d,dep}){ /* plug a real LLM in here */
+  const s=q.toLowerCase(),mi=monthIn(s),date=mi>=0?monthDate(mi):dep,w=await API.weather(d,date),M=MONTHS[date.getMonth()];
+  if(/visa|passport|document/.test(s))return`${d.visa.IN.text}${d.validity?' Your passport needs 6 months left after you return.':''}`;
+  if(/safe|alone|solo|women/.test(s))return`${d.safe} In ${M} it's ${w.label.toLowerCase()}, around ${w.temp}°C.`;
+  if(/weather|rain|hot|cold|season|when/.test(s))return`${M} in ${d.name}: ${w.label.toLowerCase()}, around ${w.temp}°C.`;
+  if(/price|cost|cheap|much|deal/.test(s))return`${d.name} is ${money(total(d))} all-in${dropped(d)?`, down from ${money(d.was+total(d)-d.price)}`:''}.`;
+  if(/bag|luggage/.test(s))return d.extras.bags?`Bags add ${money(d.extras.bags)}. It's already in the all-in price.`:`Bags are included.`;
+  if(/refund|cancel/.test(s))return`Cancel from My trip. You can follow every refund step there.`;
+  if(/layover|connection/.test(s))return d.layover?`Your connection is ${d.layover} minutes. We check it before you pay.`:`It's a direct flight.`;
+  return`I can help with visas, weather, safety, prices and refunds. Try one!`}
+};
+
+/* ---------- Helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const money=n=>'₹'+Math.round(n).toLocaleString('en-IN'),fmt=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short'}),iso=d=>d.toLocaleDateString('en-CA');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),addDays=(d,n)=>new Date(+d+n*864e5);
+const monthIn=s=>MONTHS.findIndex(m=>s.toLowerCase().includes(m.toLowerCase()));
+const monthDate=m=>{const n=new Date(),y=new Date(n.getFullYear(),m,15)<n?n.getFullYear()+1:n.getFullYear();return new Date(y,m,15)};
+const saved=()=>{try{return JSON.parse(localStorage.getItem('traveller'))||{}}catch{return{}}};
+const st={dep:addDays(new Date(),30),picks:[],sel:null,allIn:true,booking:null,refund:-1,members:['You','Asha','Ravi'],vote:null,shared:24000,opt:false,verified:false,
+ votes:{'Beachside stay':2,'City-centre stay':1,'Quiet guesthouse':1}};
+const shown=d=>st.allIn?total(d):d.price;
+const plan=(d,dep)=>[`Fly from ${ORIGIN} and settle in`,...d.spots,'A free day. Wander or rest.','Fly home'].map((t,i)=>({when:fmt(addDays(dep,i)),t}));
+
+/* ---------- Home: "Here's what we'd pick for you" ---------- */
+function choose(q,dep){
+ const kw={beach:/beach|sea|sun|swim/,relax:/relax|chill|calm|rest/,cheap:/cheap|budget|afford/,city:/city|nightlife|shop/,culture:/culture|temple|history|art/,food:/food|eat/};
+ const want=Object.keys(kw).filter(k=>kw[k].test(q)),warm=/warm|hot|sun/.test(q),bm=q.match(/(?:under|below|₹|rs\.?)\s*([\d,]+)\s*(k?)/);
+ const budget=bm?parseInt(bm[1].replace(/,/g,''))*(bm[2]?1000:1):0,m=dep.getMonth();
+ const comfort=d=>-Math.abs(d.temp[m]-(warm?30:25))-d.rain[m]/40;
+ const score=d=>want.filter(k=>d.tags.includes(k)).length*4+comfort(d)/3+(budget?(total(d)<=budget?4:-4):0);
+ const by=f=>[...DESTS].sort((a,b)=>f(b)-f(a)),out=[];
+ const add=(label,list)=>out.push({label,d:list.find(x=>!out.some(o=>o.d===x))});
+ add('Our pick for you',by(score));add('Easiest on your wallet',by(d=>-total(d)));add('Best weather for your dates',by(comfort));
+ return out;
+}
+async function renderPicks(){
+ st.picks=choose($('#q').value.toLowerCase(),st.dep);
+ const ws=await Promise.all(st.picks.map(p=>API.weather(p.d,st.dep)));
+ $('#results').innerHTML=`<div class="row"><h2>Here's what we'd pick for you</h2><label class="sw"><input type="checkbox" id="allin" ${st.allIn?'checked':''}><span>Show all-in price</span></label></div>
+ <div class="grid">${st.picks.map((p,i)=>`<article class="card"><p class="soft">${p.label}</p><h3>${p.d.name}, <span>${p.d.country}</span></h3>
+ <p>${ws[i].label}, around ${ws[i].temp}°C in ${MONTHS[st.dep.getMonth()]}</p>
+ <p class="price">${money(shown(p.d))}${dropped(p.d)?'<span class="badge">Price just dropped</span>':''}</p>
+ <p class="soft">${st.allIn?'Per person, with flight, bags, visa and taxes':'Flight only. Extras are added at checkout'}</p>
+ <button class="btn" data-book="${p.d.id}">Book this</button></article>`).join('')}</div>`;
+ $('#allin').onchange=e=>{st.allIn=e.target.checked;renderPicks()};
+ $$('[data-book]').forEach(b=>b.onclick=()=>openBook(b.dataset.book));
+}
+
+/* ---------- Booking: one page, progress bar, automatic checks ---------- */
+function prog(n){$('#prog').innerHTML=`<div class="bar" role="progressbar" aria-valuenow="${n}" aria-valuemax="4"><i style="width:${n*25}%"></i></div><ul class="steps">${['Your trip','Your details','Quick checks','Payment'].map((t,i)=>`<li class="${i<n?'on':''}">${t}</li>`).join('')}</ul>`}
+function openBook(id){
+ const d=DESTS.find(x=>x.id===id),s=saved(),x=d.extras;st.sel=d;
+ const rows=[['Flight',d.price],['Bags',x.bags],['Visa',x.visa],['Taxes and fees',x.taxes]].filter(r=>r[1]);
+ $('#bookbox').innerHTML=`<h2>Book your ${d.name} trip</h2><div id="prog"></div>
+ <div id="bk"><div class="card"><strong>${ORIGIN} to ${d.name}</strong><p class="soft">Leave ${fmt(st.dep)}, back ${fmt(addDays(st.dep,DAYS))}</p>
+ <table>${rows.map(r=>`<tr><td>${r[0]}</td><td>${money(r[1])}</td></tr>`).join('')}<tr><td>All-in total</td><td>${money(total(d))}</td></tr></table></div>
+ <form id="trav" class="card"><h3>Who's travelling?</h3>
+  <label>Full name, as on your passport<input name="name" autocomplete="name" value="${esc(s.name||'')}"></label>
+  <label>Email<input name="email" type="email" autocomplete="email" value="${esc(s.email||'')}"></label>
+  <label>Passport country<select name="nat"><option value="IN">India</option><option value="XX" ${s.nat==='XX'?'selected':''}>Somewhere else</option></select></label>
+  <label>Passport expires on<input name="exp" type="date" value="${esc(s.exp||'')}"></label>
+  <label class="sw"><input type="checkbox" name="save" checked><span>Save these for next time</span></label></form>
+ <div class="card" id="checks"></div>
+ <button class="btn big" id="pay" disabled>Pay</button><p class="soft" style="margin-top:8px">Demo only: no real payment is taken.</p></div>`;
+ $('#trav').oninput=update;$('#pay').onclick=pay;update();location.hash='book';
+}
+async function update(){
+ const v=Object.fromEntries(new FormData($('#trav'))),d=st.sel;
+ const ok=(v.name||'').trim().length>1&&/\S+@\S+\.\S+/.test(v.email||'')&&!!v.exp;
+ let res=[];if(ok){$('#checks').innerHTML=`<p>Checking your trip…</p>`;res=await API.preflight(d,v,st.dep)}
+ const good=ok&&!res.some(r=>r.s==='fail'),icon={ok:'✓',warn:'!',fail:'✕'};
+ $('#checks').innerHTML=`<h3>Quick checks before you pay</h3>`+(ok?`<ul class="ck">${res.map(r=>`<li class="${r.s}"><b>${icon[r.s]}</b><div><strong>${r.t}</strong><span>${r.m}</span></div></li>`).join('')}</ul>`:`<p class="soft">Add your details and we'll check your visa, passport and connection for you.</p>`);
+ prog(1+(ok?1:0)+(good?1:0));$('#pay').disabled=!good;$('#pay').textContent=`Pay ${money(total(d))}`;
+}
+function pay(){
+ const f=new FormData($('#trav')),d=st.sel,ref='SDJ-'+Math.random().toString(36).slice(2,7).toUpperCase();
+ if(f.get('save'))try{localStorage.setItem('traveller',JSON.stringify({name:f.get('name'),email:f.get('email'),nat:f.get('nat'),exp:f.get('exp')}))}catch{}
+ st.booking={d,dep:st.dep,ref};st.refund=-1;prog(4);
+ $('#bk').innerHTML=`<div class="card"><h2 style="margin-top:0">You're booked!</h2><p>${d.name}, ${fmt(st.dep)} to ${fmt(addDays(st.dep,DAYS))}. Your reference is <strong>${ref}</strong>. We've emailed your trip to ${esc(f.get('email'))}.</p><p style="margin-top:14px"><a class="btn" href="#trip">See my trip</a></p></div>`;
+}
+
+/* ---------- Trip dashboard ---------- */
+const STAGES=['Requested','Approved','Sent to bank','In your account'],SMSG=[`We got your request. We'll review it within a day.`,`Approved. We're sending your money back.`,`On its way to your bank. It usually lands in 2 to 5 days.`,`Done. The money is in your account.`];
+const HELP={'My flight is delayed':`Stay calm. We'll look for the next flight and keep your hotel in step.`,"I can't find my booking":`Check your email first. If it's not there, we'll resend it right away.`,'I need to change something':`Changes to dates or names are free to request. We'll tell you the exact cost first.`,'Something else':`Tell the trip assistant in your own words. We'll sort it out.`};
+function renderTrip(){
+ const b=st.booking,el=$('#tripbox');
+ if(!b){el.innerHTML=`<h2>Your trip</h2><div class="card"><p>No trip yet. Pick one and it'll show up here.</p><p style="margin-top:12px"><a class="btn" href="#home">Find a trip</a></p></div>`;return}
+ const r=st.refund;
+ el.innerHTML=`<div class="row"><h2>Your ${b.d.name} trip</h2><button class="btn sos" id="sos">I have a problem</button></div><p class="soft">Reference ${b.ref}</p>
+ <div class="card"><h3>Your itinerary</h3><ul class="tl">${plan(b.d,b.dep).map(p=>`<li><b>${p.when}</b><span>${p.t}</span></li>`).join('')}</ul></div>
+ <div class="card"><h3>Refunds and cancellations</h3><div class="status">${r<0?`Nothing to refund right now.`:`${STAGES[r]}. ${SMSG[r]}`}</div>
+ <div class="stage">${STAGES.map((s,i)=>`<span class="${i<=r?'on':''}">${s}</span>`).join('')}</div>
+ ${r<0?`<button class="btn ghost" id="cancel">Cancel this trip</button>`:r<3?`<button class="btn ghost" id="next">Preview the next step</button>`:''}</div>`;
+ $('#sos').onclick=()=>{$('#hopts').innerHTML=Object.keys(HELP).map(k=>`<button class="btn ghost">${k}</button>`).join('');$('#hans').hidden=$('#hchat').hidden=true;$('#help').showModal();
+  $$('#hopts button').forEach(o=>o.onclick=()=>{$('#hans').textContent=HELP[o.textContent];$('#hans').hidden=$('#hchat').hidden=false;$('#hchat').onclick=()=>{$('#help').close();openChat(o.textContent)}})};
+ if($('#cancel'))$('#cancel').onclick=()=>{st.refund=0;renderTrip()};if($('#next'))$('#next').onclick=()=>{st.refund++;renderTrip()};
+}
+$('#hx').onclick=()=>$('#help').close();
+
+/* ---------- Group trips ---------- */
+async function renderGroup(){
+ const d=st.booking?.d||st.sel||DESTS[0],n=st.members.length,tv=await API.travellers(d);
+ $('#groupbox').innerHTML=`<h2>Plan ${d.name} together</h2><p class="soft">One plan everyone can see. No more endless group chats.</p>
+ <div class="card"><h3>Who's coming</h3>${st.members.map(m=>`<span class="pill">${esc(m)}</span>`).join('')}
+ <form id="addm" class="inline"><input id="mn" aria-label="Friend's name" placeholder="Add a friend's name" required><button class="btn ghost">Add</button></form><button class="btn" id="inv">Copy invite link</button></div>
+ <div class="card"><h3>The plan</h3><ul class="tl">${plan(d,st.dep).map(p=>`<li><b>${p.when}</b><span>${p.t}</span></li>`).join('')}</ul></div>
+ <div class="card"><h3>Where should we stay?</h3>${Object.entries(st.votes).map(([k,v])=>`<button class="vote ${st.vote===k?'on':''}" data-vote="${k}"><span>${k}</span><b>${v} vote${v==1?'':'s'}</b></button>`).join('')}</div>
+ <div class="card"><h3>Split the cost</h3><label>Shared costs for stay, cabs and food (₹)<input id="shared" type="number" min="0" value="${st.shared}"></label>
+ <p>Everyone pays <strong id="split">${money(total(d)+st.shared/n)}</strong></p><p class="soft">That's ${money(total(d))} each for flights, bags, visa and taxes, plus an equal share of the group costs.</p></div>
+ <div class="card"><h3>Travellers on this trip</h3><label class="sw"><input type="checkbox" id="opt" ${st.opt?'checked':''}><span>Meet other travellers going to ${d.name}</span></label><p class="soft">Totally optional. It's off until you turn it on.</p>
+ ${st.opt?`<div style="margin-top:14px"><label class="sw"><input type="checkbox" checked><span>Show my first name only</span></label><br><label class="sw"><input type="checkbox" checked><span>Share my dates, not where I'm staying</span></label><br><label class="sw"><input type="checkbox" checked><span>Only verified travellers can see me</span></label>
+ ${st.verified?tv.map(t=>`<div class="status" style="margin-top:12px">✓ Verified: ${t.n}<br><span class="soft">${t.note}</span></div>`).join('')+`<p class="soft">Meet in public places and tell a friend. You can turn this off any time.</p>`:`<p style="margin:14px 0 8px">Verify your ID to see and meet others. It takes about a minute.</p><button class="btn" id="ver">Verify my ID</button>`}</div>`:''}</div>`;
+ $('#addm').onsubmit=e=>{e.preventDefault();st.members.push($('#mn').value.trim());renderGroup()};
+ $('#inv').onclick=async e=>{try{await navigator.clipboard.writeText(location.href)}catch{}e.target.textContent='Link copied. Share it with your group.'};
+ $$('[data-vote]').forEach(b=>b.onclick=()=>{const k=b.dataset.vote;if(st.vote===k)return;if(st.vote)st.votes[st.vote]--;st.votes[k]++;st.vote=k;renderGroup()});
+ $('#shared').oninput=e=>{st.shared=+e.target.value||0;$('#split').textContent=money(total(d)+st.shared/n)};
+ $('#opt').onchange=e=>{st.opt=e.target.checked;renderGroup()};if($('#ver'))$('#ver').onclick=()=>{st.verified=true;renderGroup()};
+}
+
+/* ---------- Trip assistant ---------- */
+const msg=(t,me)=>{$('#msgs').insertAdjacentHTML('beforeend',`<p class="m ${me?'me':''}">${esc(t)}</p>`);$('#msgs').scrollTop=1e5};
+async function ask(q){msg(q,1);msg(await API.assistant(q,{dest:st.booking?.d||st.sel||st.picks[0]?.d||DESTS[0],dep:st.dep}))}
+function openChat(q){$('#chat').hidden=false;$('#fab').hidden=true;if(!$('#msgs').children.length)msg(`Hi! Ask me anything about your trip.`);if(q)ask(q);$('#ci').focus()}
+$('#fab').onclick=()=>openChat();$('#cx').onclick=()=>{$('#chat').hidden=true;$('#fab').hidden=false};
+$$('#sug button').forEach(b=>b.onclick=()=>ask(b.dataset.q));
+$('#cf').onsubmit=e=>{e.preventDefault();const q=$('#ci').value.trim();if(q){$('#ci').value='';ask(q)}};
+
+/* ---------- Start ---------- */
+$('#dep').value=iso(st.dep);
+$('#find').onsubmit=e=>{e.preventDefault();const q=$('#q').value,mi=monthIn(q);st.dep=mi>=0?monthDate(mi):new Date($('#dep').value+'T12:00');$('#dep').value=iso(st.dep);renderPicks()};
+$$('.hero .chips button').forEach(b=>b.onclick=()=>{$('#q').value=b.textContent;$('#find').requestSubmit()});
+$('#cta').onclick=()=>{scrollTo(0,0);$('#q').focus()};
+function route(){
+ let v=location.hash.slice(1)||'home';if(!['home','book','trip','group'].includes(v)||(v==='book'&&!st.sel))v='home';
+ $$('[data-v]').forEach(s=>s.classList.toggle('on',s.dataset.v===v));$$('nav a').forEach(a=>a.classList.toggle('on',a.hash==='#'+v));
+ if(v==='trip')renderTrip();if(v==='group')renderGroup();scrollTo(0,0);
+}
+addEventListener('hashchange',route);route();renderPicks();
+</script>
+</body>
+</html>
